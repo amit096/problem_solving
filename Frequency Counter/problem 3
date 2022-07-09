@@ -1,0 +1,17 @@
+Counting frequencies of array elements
+
+example:
+countFrequency([5, 5, 5, 2, 2, 2, 2, 2, 9, 4],5); //3
+
+solution:
+
+function countFrequency(arr,val){
+
+const counts = {};
+
+for (const num of arr) {
+  counts[num] = counts[num] ? counts[num] + 1 : 1;
+}
+
+return counts[val];
+}

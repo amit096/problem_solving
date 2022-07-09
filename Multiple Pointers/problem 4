@@ -20,8 +20,8 @@ function threeSum(nums) {
   const res = [];
 
   nums.forEach((value, idx) => {
-    if (idx > 0 && value === nums[idx - 1]) return;
-    let left = idx + 1,
+    if (idx > 0 && value === nums[idx - 1]) return; // if current value is equal to previous value return
+    let left = idx + 1, // left should be always one greater than current index
       right = nums.length - 1;
 
     while (left < right) {
@@ -32,6 +32,7 @@ function threeSum(nums) {
         left++;
       } else {
         res.push([value, nums[left], nums[right]]);
+        // line 36 and 37 is for handeling duplicates
         left++;
         while (left < right && nums[left] === nums[left - 1]) left++;
       }

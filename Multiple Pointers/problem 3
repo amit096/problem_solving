@@ -1,0 +1,39 @@
+Q) Valid Palindrome II
+Given a string s, return true if the s can be palindrome after deleting at most one character from it.
+
+example:
+Input: s = "abca"
+Output: true
+Explanation: You could delete the character 'c'
+
+Solution:
+
+const validPalindrome = (s) => {
+    let left = 0;
+    let right = s.length-1;
+    while(left<right){
+        if(s.charAt(left)==s.charAt(right)){ simple check for palindrome
+            left++;
+            right--;
+        }
+        if(s.charAt(left)!=s.charAt(right)){ if palindrome condition is not matching call checkPalindrome fun with left+1 and right-1 and if either is true it's true 
+            return checkPalindrome(s,left+1,right) || checkPalindrome(s,left,right-1);
+        }
+    }
+    return true;
+};
+
+const checkPalindrome = (s,i,j) => { //simple function to check palindrome  
+    let left = i;
+    let right = j;
+    while(left<right){
+        if(s.charAt(left)==s.charAt(right)){
+            left++;
+            right--;
+        }
+        if(s.charAt(left)!=s.charAt(right)){
+            return false;
+        }
+    }
+    return true;
+};

@@ -1,0 +1,26 @@
+what is algorithm?
+A process or set of steps to accomplish a certain task. Almost everything that we do in programming involves some kind of algorithm .It’s the foundation for being a successful problem solving developer.
+
+But how do we even start or improve ?
+
+I think there are 2 things which we can do :
+
+1)Devise a plan for solving problems.
+
+This can include many things. But few basic things if we keep in mind can help us to solve many problems like:
+
+Understand the Problem
+Explore Concrete Examples
+Break It Down
+Solve/Simplify
+Look Back and Refactor
+
+2)Master common problem solving patterns.
+
+This will give us a confidence and saves our time when ever we see any problem related to algorithms. There are many problem solving patterns, Some are named and some that are unnamed. Some of them are
+
+Frequency Counter
+Multiple Pointers
+Sliding Window
+Divide and Conquer
+and Many more…

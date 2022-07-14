@@ -40,3 +40,6 @@ return merge(left,right);
 Eample :
 [8,7,5,6,4,1,2,3]
 output:[1,2,3,4,5,6,7,8]
+
+Time complexity : O(nlogn) // in all case :Avg ,worst
+Space Complexity : O(n)

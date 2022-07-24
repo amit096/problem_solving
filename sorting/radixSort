@@ -33,4 +33,10 @@ function radixSort(nums){
     return nums;
 }
 
-radixSort([23,345,5467,12,2345,9852])
+radixSort([23,345,5467,12,2345,9852]);
+
+Time complexity :O(nk)
+Space complexity :O(n+k)
+
+n= arr.length
+k= maxDigitCount

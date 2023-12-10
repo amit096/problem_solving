@@ -5,18 +5,43 @@
  * Compare it with the results from 3-promise-all.js
  */
 
-function waitOneSecond() {
 
+function waitOneSecond() {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve('waitOneSecond');
+        }, 1000);
+    });
 }
 
 function waitTwoSecond() {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve('waitTwoSecond');
+        }, 2000);
+    });
 
 }
 
 function waitThreeSecond() {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve('waitThreeSecond');
+        }, 3000);
+    });
 
 }
 
 function calculateTime() {
-
+    waitOneSecond().then((value) => {
+        console.log(value);
+        return waitTwoSecond()
+    }).then((value) => {
+        console.log(value);
+        return waitThreeSecond()
+    }).then((value) => {
+        console.log(value);
+    })
 }
+
+calculateTime();// it takes total sec in this case it's 6

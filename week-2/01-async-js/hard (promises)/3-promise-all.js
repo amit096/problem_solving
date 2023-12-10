@@ -8,35 +8,38 @@
 
 
 function waitOneSecond() {
-   return new Promise((resolve)=>{
-          setTimeout(()=>{
+    return new Promise((resolve) => {
+        setTimeout(() => {
             resolve('waitOneSecond');
-          },1000);
+        }, 1000);
     });
 }
 
 function waitTwoSecond() {
-    return new Promise((resolve)=>{
-        setTimeout(()=>{
-          resolve('waitTwoSecond');
-        },2000);
-  });
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve('waitTwoSecond');
+        }, 2000);
+    });
 
 }
 
 function waitThreeSecond() {
-    return new Promise((resolve)=>{
-        setTimeout(()=>{
-          resolve('waitThreeSecond');
-        },3000);
-  });
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve('waitThreeSecond');
+        }, 3000);
+    });
 
 }
 
 function calculateTime() {
-Promise.all([waitOneSecond(),waitTwoSecond(),waitThreeSecond()]).then((values)=>{
-    console.log(values);
-});
+    let start = new Date().getTime();
+    Promise.all([waitOneSecond(), waitTwoSecond(), waitThreeSecond()]).then((values) => {
+        console.log(values);
+        let end = new Date().getTime();
+        console.log(`Time taken: ${(end - start) / 1000}`);
+    });
 }
 
 calculateTime();//Promise.all will wait for the longest-running promise to complete before calling the callback.

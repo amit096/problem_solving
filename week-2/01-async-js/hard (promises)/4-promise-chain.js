@@ -33,14 +33,21 @@ function waitThreeSecond() {
 }
 
 function calculateTime() {
+    let start = new Date().getTime();
     waitOneSecond().then((value) => {
         console.log(value);
+        let end = new Date().getTime();
+        console.log(`Time taken to reach 1: ${(end - start) / 1000}`);
         return waitTwoSecond()
     }).then((value) => {
         console.log(value);
+        let end = new Date().getTime();
+        console.log(`Time taken to reach 2: ${(end - start) / 1000}`);
         return waitThreeSecond()
     }).then((value) => {
         console.log(value);
+        let end = new Date().getTime();
+        console.log(`Time taken to reach 3: ${(end - start) / 1000}`);
     })
 }
 

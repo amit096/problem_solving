@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.11.7/video-js.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .tooltip.vjs-time-tooltip {
+        right: -50px;
+        background-color: transparent;
+        border-radius: 0.3em;
+        color: #000;
+        color: white;
+        float: right;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 1em;
+        padding: 6px 8px 8px 8px;
+        pointer-events: none;
+        position: absolute;
+        top: -6em;
+        visibility: hidden;
+        z-index: 1;
+        width: 100px;
+      }
+      .vjs-play-progress.vjs-slider-bar {
+        color: red;
+        background-color: red;
+        z-index: 1;
+      }
+      .btn {
+        padding: 0.5rem 0.8rem;
+        width: fit-content;
+        border: none;
+        border-radius: 5px;
+        transition: 100ms linear;
+      }
+
+      .chapter-break {
+        margin: 0;
+        padding: 0;
+        height: 100% !important;
+        background-color: transparent;
+        border-right: 3px solid #1b1b1b !important;
+        position: absolute;
+        z-index: 1;
+      }
+
+      .loader-progress {
+        margin: 0;
+        padding: 0;
+        height: 100% !important;
+        position: absolute;
+        width: 150px;
+        background-color: #fff;
+      }
+      body {
+        margin: 0;
+        background-color: black;
+      }
+      .videoo{
+        position:relative;
+        max-width:1450px;
+        margin-left:20.5%;
+        margin-top:5px;
+      }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.11.7/video.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-eme@3.8.0/dist/videojs-contrib-eme.js"></script>
+
+    <title>Test VideJS DRM</title>
+  </head>
+  <body>
+    <div
+      style="
+        height: 50px;
+        background-color: brown;
+        display: flex;
+        align-items: center;
+        border-bottom-width: 1px;
+        border-color: rgb(0 0 0);
+        border-style: solid;
+      "
+    >
+      <div
+        style="
+          color: white;
+          padding-left: 20px;
+          background-color: black;
+          height: 100%;
+          width: 150px;
+          display: flex;
+          align-items: center;
+        "
+      >
+        Test VideoJS DRM
+      </div>
+      <div style="color: white; margin-left: 30px" id="chapter-title">
+        Introduction
+      </div>
+    </div>
+   
+      <div
+        style="
+               height:100%;
+          width: 20%;
+               position:absolute;
+          background-color: brown;
+          border-left-width: 4px;
+          border-color: rgb(0 0 0);
+          border-style: solid;
+          color: white;
+        "
+        id="sidenav"
+      >
+        <!-- Navigation content will be dynamically added by script.js -->
+       
+      </div>
+      
+    
+    <div class="videoo">
+        <video id="my-video" class="video-js"></video>
+    </div>
+    <script>
+      var chapters = [
+        { title: "Chapter 1", start: 0, end: 30 },
+        {
+          title: "Chapter 2",
+          start: 30,
+          end: 100,
+        },
+        {
+          title: "Chapter 3",
+          start: 100,
+          end: 155,
+        },
+        {
+          title: "Chapter 4",
+          start: 155,
+          end: 170,
+        },
+        {
+          title: "Chapter 5",
+          start: 170,
+          end: 190,
+        },
+        {
+          title: "Chapter 6",
+          start: 190,
+          end: 210,
+        },
+      ];
+      var player = videojs(
+        "my-video",
+        {
+          controls: true,
+          fluid: true,
+          html5: {
+            vhs: {
+              overrideNative: true,
+            },
+          },
+        },
+        function () {
+          var player = this;
+          player.eme();
+          console.log(player);
+          player.src({
+            src: "https://cdn.bitmovin.com/content/assets/art-of-motion_drm/mpds/11331.mpd",
+            type: "application/dash+xml",
+            keySystems: {
+              "com.widevine.alpha":
+                "https://cwip-shaka-proxy.appspot.com/no_auth",
+            },
+          });
+
+          player.ready(function () {
+            player.on("loadedmetadata", function () {
+              const duration = player.duration();
+              const seekbar = player.controlBar.progressControl.seekBar;
+              const controlbar = player.controlBar;
+              // Create a new span element
+
+              const chapterSpann = document.createElement("span");
+              chapterSpann.classList.add("loader-progress");
+              const chapterWidth = (45 / duration) * 100;
+              const chapterLeft = (45 / duration) * 100;
+              chapterSpann.style.width = `${chapterWidth}%`;
+              chapterSpann.style.left = `${0}%`;
+              seekbar.el().appendChild(chapterSpann);
+              chapters.forEach((chapter) => {
+                const chapterSpan = document.createElement("span");
+                chapterSpan.classList.add("chapter-break");
+
+                const chapterWidth =
+                  ((chapter.end - chapter.start) / duration) * 100;
+                const chapterLeft = (chapter.start / duration) * 100;
+
+                chapterSpan.style.width = `${chapterWidth}%`;
+                chapterSpan.style.left = `${chapterLeft}%`;
+
+                seekbar.el().appendChild(chapterSpan);
+              });
+            });
+
+            player.tech(true).on("keystatuschange", function (event) {
+              //console.log("event: ", event);
+            });
+          });
+        },
+      );
+      var mousedisplay =
+        player.controlBar.progressControl.seekBar.mouseTimeDisplay;
+      var newSpan = document.createElement("div");
+      newSpan.classList.add("tooltip");
+      newSpan.classList.add("vjs-time-tooltip");
+      newSpan.id = "tooltip";
+      mousedisplay.el().appendChild(newSpan);
+      player.on("timeupdate", () => {});
+      function myScript() {
+        // Your script logic goes here
+        console.log("Script is running...");
+
+        setInterval(function () {
+          const element = document.querySelector(".vjs-time-tooltip");
+
+          const styles = window.getComputedStyle(element);
+
+          const visibility = styles.visibility;
+          if (visibility === "visible") {
+            const loaderElement = document.querySelector(".loader-progress");
+            if (loaderElement) {
+              const mouseDisplayElement =
+                document.querySelector(".vjs-mouse-display");
+              const mouseDisplaystyles =
+                window.getComputedStyle(mouseDisplayElement);
+
+              const newWidth = mouseDisplaystyles.left;
+
+              loaderElement.style.width = newWidth;
+            }
+          } else {
+            const loaderElement = document.querySelector(".loader-progress");
+            if (loaderElement) {
+              loaderElement.style.width = 0;
+            }
+          }
+          var timeWhenhovered =
+            document.getElementsByClassName("vjs-time-tooltip")[0].innerHTML;
+
+          if (timeWhenhovered !== "") {
+            var timeWhenhoveredarray = timeWhenhovered.split(":");
+            var timeStamp = 0;
+            for (let i = 0; i < timeWhenhoveredarray.length; i++) {
+              timeStamp +=
+                timeWhenhoveredarray[timeWhenhoveredarray.length - i - 1] *
+                Math.pow(60, i);
+            }
+            var title = "";
+            for (let i = 0; i < chapters.length; i++) {
+              title = chapters[i].title;
+              var end = chapters[i].end;
+              if (end > timeStamp) {
+                break;
+              }
+            }
+          }
+
+          var chapterName = document.getElementById("tooltip");
+          if (chapterName.innerHTML !== title) {
+            chapterName.innerHTML = title;
+          }
+        }, 100);
+      }
+      myScript();
+
+      document.addEventListener("keydown", function (event) {
+        if (event.keyCode === 39) {
+          player.currentTime(player.currentTime() + 5);
+        } else if (event.keyCode === 37) {
+          player.currentTime(player.currentTime() - 5);
+        } else if (event.keyCode === 38) {
+          if (player.volume() < 1) {
+            player.volume(player.volume() + 0.1);
+          }
+        } else if (event.keyCode === 40) {
+          if (player.volume() > 0) {
+            player.volume(player.volume() - 0.1);
+          }
+        }
+      });
+      function formatTime(seconds) {
+        // Ensure the input is a non-negative number
+        seconds = Math.max(0, seconds);
+
+        // Calculate hours, minutes, and remaining seconds
+        var hours = Math.floor(seconds / 3600);
+        var minutes = Math.floor((seconds % 3600) / 60);
+        var remainingSeconds = Math.floor(seconds % 60);
+
+        // Add leading zeros if needed
+        var formattedHours = hours < 10 ? "0" + hours : hours;
+        var formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
+        var formattedSeconds =
+          remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds;
+
+        // Return the formatted time
+        return formattedHours + ":" + formattedMinutes + ":" + formattedSeconds;
+      }
+
+      var sideNav = document.getElementById("sidenav");
+      chapters.forEach((chapter) => {
+        const chapterDiv = document.createElement("div");
+
+        chapterDiv.innerHTML = `
+      
+        <div style="background-color:black;padding:4px;display:flex;align-items:center;margin:10px;cursor:pointer" onclick="handlechapterClick(${
+          chapter.start
+        })">
+          <img src="https://ik.imagekit.io/ikmedia/backlit.jpg" width="70px" height="50px"/>
+          <div style="margin-left:10px;">
+            <div>${chapter.title}</div>
+            <div>${formatTime(chapter.start)} - ${formatTime(chapter.end)}</div>
+          </div>
+        </div>
+      `;
+        sideNav.append(chapterDiv);
+      });
+      function handlechapterClick(start) {
+        player.currentTime(start);
+      }
+    </script>
+  </body>
+</html>
+
+

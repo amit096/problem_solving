@@ -7,39 +7,40 @@
  */
 
 
-function waitOneSecond() {
+// 3-promise-all.js
+
+function waitOneSecond(a) {
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve('waitOneSecond');
-        }, 1000);
+        }, a * 1000);
     });
 }
 
-function waitTwoSecond() {
+function waitTwoSecond(b) {
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve('waitTwoSecond');
-        }, 2000);
+        }, b * 1000);
     });
-
 }
 
-function waitThreeSecond() {
+function waitThreeSecond(c) {
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve('waitThreeSecond');
-        }, 3000);
-    });
-
-}
-
-function calculateTime() {
-    let start = new Date().getTime();
-    Promise.all([waitOneSecond(), waitTwoSecond(), waitThreeSecond()]).then((values) => {
-        console.log(values);
-        let end = new Date().getTime();
-        console.log(`Time taken: ${(end - start) / 1000}`);
+        }, c * 1000);
     });
 }
 
-calculateTime();//Promise.all will wait for the longest-running promise to complete before calling the callback.
+function calculateTime(a, b, c) {
+    return new Promise((resolve) => {
+        let start = new Date().getTime();
+        Promise.all([waitOneSecond(a), waitTwoSecond(b), waitThreeSecond(c)]).then(() => {
+            let end = new Date().getTime();
+            resolve(end - start);
+        });
+    });
+}
+
+module.exports = calculateTime;

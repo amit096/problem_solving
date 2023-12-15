@@ -8,9 +8,12 @@ function wait(n) {
     return new Promise((resolve)=>{
     //    if(err) reject('some issue'); 
     setTimeout(()=>{
-          resolve(`wait ended after : ${n/1000}`);
+          resolve();
        
-    },n)})
+    },n*1000)})
 }
 
-wait(5000).then((data)=>console.log(data));
+wait(5).then((data)=>console.log(data));
+
+
+module.exports = wait;

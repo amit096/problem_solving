@@ -6,49 +6,55 @@
  */
 
 
-function waitOneSecond() {
+function waitOneSecond(a) {
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve('waitOneSecond');
-        }, 1000);
+        }, a*1000);
     });
 }
 
-function waitTwoSecond() {
+function waitTwoSecond(b) {
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve('waitTwoSecond');
-        }, 2000);
+        }, b*1000);
     });
 
 }
 
-function waitThreeSecond() {
+function waitThreeSecond(c) {
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve('waitThreeSecond');
-        }, 3000);
+        }, c*1000);
     });
 
 }
 
-function calculateTime() {
+function calculateTime(a,b,c) {
     let start = new Date().getTime();
-    waitOneSecond().then((value) => {
+    return waitOneSecond(a).then((value) => {
         console.log(value);
         let end = new Date().getTime();
-        console.log(`Time taken to reach 1: ${(end - start) / 1000}`);
-        return waitTwoSecond()
+        console.log(`Time taken to reach 1: ${(end - start)}`);
+        return waitTwoSecond(b)
     }).then((value) => {
         console.log(value);
         let end = new Date().getTime();
-        console.log(`Time taken to reach 2: ${(end - start) / 1000}`);
-        return waitThreeSecond()
+        console.log(`Time taken to reach 2: ${(end - start)}`);
+        return waitThreeSecond(c)
     }).then((value) => {
         console.log(value);
         let end = new Date().getTime();
-        console.log(`Time taken to reach 3: ${(end - start) / 1000}`);
+        console.log(`Time taken to reach 3: ${(end - start)}`);
+        return end - start; // Resolve the total time taken
+    }).catch((err)=>{
+      console.log(err);
     })
 }
 
-calculateTime();// it takes total sec in this case it's 6
+//calculateTime(1,2,3);// it takes total sec in this case it's 6
+
+
+module.exports=calculateTime;

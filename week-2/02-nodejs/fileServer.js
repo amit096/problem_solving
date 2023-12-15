@@ -38,6 +38,29 @@ app.get('/file/:filename', (req, res) => {
 
 });
 
+app.delete('/file/:filename', (req, res) => {
+  let filePath = path.join(__dirname, '/files/', req.params.filename);
+  fs.unlink(filePath, (err) => {
+    if (err)
+      return res.status(404).send('file not found')
+
+      return res.sendStatus(200);
+  });
+});
+
+app.delete('/files', (req, res) => {
+  let filePath = path.join(__dirname, '/files');
+  fs.rmdir(filePath, (err) => {
+    if (err)
+      return res.status(404).json(err);
+
+      return res.sendStatus(200);
+
+  });
+});
+
+
+
 app.use((req, res, next) => {
   res.status(404).send('Route not found');
 

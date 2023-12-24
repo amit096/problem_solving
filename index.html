@@ -1,0 +1,49 @@
+<html>
+    <script>
+    let globalId=1;
+    function markAstodo(id){
+        const element = document.getElementById(id);
+        element.children[2].innerHTML="done"; // it will access button 
+        return element;
+    }
+
+     function childAtt(title,desc,id){
+      const child = document.createElement('div');
+
+      const grandChild1=document.createElement('div');
+      grandChild1.innerHTML=title;
+
+      const grandChild2=document.createElement('div');
+      grandChild2.innerHTML=desc;
+
+      const grandChild3=document.createElement('button');
+      grandChild3.innerHTML="Mark as done";
+      
+      grandChild3.setAttribute("onclick",`markAstodo(${id})`);
+
+      
+      child.appendChild(grandChild1);
+      child.appendChild(grandChild2);
+      child.appendChild(grandChild3);
+
+      child.setAttribute("id",id);
+      return child;
+     }
+
+     function addTodo(){
+        const title = document.getElementById("title").value;
+        const desc = document.getElementById("desc").value;
+      
+        const parent =document.getElementById("container");
+        parent.appendChild(childAtt(title,desc,globalId++));
+     }
+    </script>
+    <body>
+        <div>
+       <input placeholder="title" type="text" id ="title">
+       <input placeholder="desc" type="text" id ="desc">
+        <button onclick="addTodo()"> Add Todo</button>
+        <div id="container"></div>
+    </div>
+    </body>
+</html>

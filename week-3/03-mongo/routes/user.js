@@ -97,8 +97,7 @@ router.get('/purchasedCourses', userMiddleware, async(req, res) => {
     try {
 
         // Fetch the user's purchased courses
-        const purchasedCourses = await Purchase.find({ userId: req.user._id })
-            .populate('courseId', ['title', 'description', 'price', 'imageLink', 'published']);
+        const purchasedCourses = await Purchase.find({ userId: req.user._id });
 
         return res.status(200).json({ purchasedCourses });
     } catch {
